@@ -1,0 +1,105 @@
+<!-- MVP.css quickstart template: https://github.com/andybrewer/mvp/ -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" href="https://via.placeholder.com/70x70">
+    <link rel="stylesheet" href="./mvp.css">
+
+    <meta charset="utf-8">
+    <meta name="description" content="My description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My title</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/"><img alt="Logo" src="https://via.placeholder.com/200x70?text=Logo" height="70"></a>
+            <ul>
+                <li>Menu Item 1</li>
+                <li><a href="#">Menu Item 2</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <hr>
+        <section>
+            <form>
+                <header>
+                    <h2>Authentication</h2>
+                </header>
+                <div id="authform">
+                    <label for="inputPhone">Phone number:</label>
+                    <input type="text" id="inputPhone" name="inputPhone" size="14" placeholder="+47 000 00 000">
+                    <button id="btnGetCode" type="button" onclick="getCode()">Get SMS Code</button>
+                </div>
+            </form>
+        </section>
+
+        <section>
+            <form>
+                <header>
+                    <h2>Enter Code</h2>
+                </header>
+                <label for="input1">Code:</label>
+                <input type="text" id="inputCode" name="inputCode" size="20" placeholder="0000">
+                <button id="btnRegisterCode" type="button" onclick="registerCode()">Save Code</button>
+            </form>
+            <div id="coderesult">
+
+            </div>
+        </section>
+        
+    </main>
+    <footer>
+        <hr>
+        <p>
+            <small>Contact info</small>
+        </p>
+    </footer>
+<script>
+    function getCode() {
+        //document.getElementById("btnGetCode").innerHTML = "";
+        document.getElementById("inputPhone").disabled = true;
+        document.getElementById("btnGetCode").disabled = true;
+
+        var str = document.getElementById("inputPhone").value;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("authform").innerHTML = this.responseText;
+            }
+        }
+
+        xmlhttp.open("GET", "getCode.php?phone="+ str, true);
+        xmlhttp.send()
+
+    }
+
+
+    function registerCode() {
+        //document.getElementById("btnGetCode").innerHTML = "";
+        document.getElementById("inputCode").disabled = true;
+        document.getElementById("btnRegisterCode").disabled = true;
+
+        var str = document.getElementById("inputCode").value;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("coderesult").innerHTML = this.responseText;
+            }
+        }
+
+        alert(str);
+
+        xmlhttp.open("GET", "registerCode.php?code="+ str, true);
+        xmlhttp.send()
+
+    }
+</script>
+</body>
+
+</html>
