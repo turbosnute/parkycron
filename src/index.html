@@ -101,6 +101,23 @@
         xmlhttp.send()
 
     }
+
+    function getVariants() {
+        //document.getElementById("btnGetCode").innerHTML = "";
+        document.getElementById("btnGetVariants").disabled = true;
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("authform").innerHTML = this.responseText;
+            }
+        }
+        var str = document.getElementById("products").value;
+
+        xmlhttp.open("GET", "getVariants.php?uri=" + encodeURIComponent(str), true);
+        xmlhttp.send()
+
+    }
 </script>
 </body>
 
