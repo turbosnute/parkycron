@@ -24,23 +24,4 @@ echo "{$row[0]} {$row[1]} {$row[2]} {$row[3]}";
 
 $database->close();
 
-
-$database = new SQLite3('db/db.sqlite');
-//$processUser = posix_getpwuid(posix_geteuid());
-//echo $processUser['name'];
-
-
-$query = "CREATE TABLE IF NOT EXISTS parkdata (
-    userId TEXT PRIMARY KEY,
-    phone TEXT,
-    token TEXT,
-    refresh_token TEXT,
-    agreementid TEXT
-);";
-$database->exec($query);
-
-
-$query = "INSERT OR REPLACE INTO parkdata('userId', 'phone', 'token', 'refresh_token') VALUES ('userId', '+4700000000', '123123', '123123');";
-$database->exec($query);
-$database->close();
 ?>

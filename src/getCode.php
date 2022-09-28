@@ -37,6 +37,7 @@
             'host: parko.giantleap.no'
         ));
 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
 
         $data = array(
@@ -47,8 +48,9 @@
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 
-        $result = curl_exec($ch);
-        if(curl_error($ch)) {
+        $result = json_decode(curl_exec($ch),true);
+
+        if (curl_error($ch)) {
             echo curl_error($ch);
         }
 
@@ -58,6 +60,21 @@
             /*
                 Enter Code Form Here?
             */
+            ?>
+            <form>
+                <header>
+                    <h2>Enter Code</h2>
+                </header>
+                <label for="inputCode">Code:</label>
+                <input type="text" id="inputCode" name="inputCode" size="20" placeholder="0000">
+                <input type="hidden" id="frmPhone" name="frmPhone" value="<?php echo $phone;?>">
+                <button id="btnRegisterCode" type="button" onclick="registerCode()">Save Code</button>
+            </form>
+            <div id="coderesult">
+
+            </div>
+
+            <?php
         } else {
             print $result;
         }
@@ -69,7 +86,7 @@
         // {"resultCode":"SUCCESS","errorCode":null,"errorMessage":null,"switchToDemo":false}
         curl_close($ch);        
     } else {
-        echo "<p>Error. Invalid phone number.</p>";
+        echo "<p>Error. Invalid phone number. '$phone'</p>";
     }
 
     //echo "Testing.";

@@ -1,82 +1,95 @@
 <?php
     $code = $_GET['code'];
-
-    // check if code is 4 ints:
-    $code = trim($code);
-    
-    $pattern = "/^[0-9]{4}$/";
-
-    if (preg_match($pattern, $code)) {
-        echo "code: $code";
-            // valid code format
+    $phone = $_GET['phone'];
 
 
-            // create a new cURL resource
-            $ch = curl_init();
+    $pattern = '/^\+[0-9]{10}$/';
+    if (preg_match($pattern, $phone)) {
 
-            // set URL and other appropriate options
-            curl_setopt($ch, CURLOPT_URL, "https://parko.giantleap.no/client/suc-verify");
-            curl_setopt($ch, CURLOPT_HEADER, 0);
+        // check if code is 4 ints:
+        $code = trim($code);
+        
+        $pattern = "/^[0-9]{4}$/";
+
+        if (preg_match($pattern, $code)) {
+            echo "code: $code<br />";
+                // valid code format
 
 
-            /*
-                Config
-            */
-            $config['useragent'] = 'Android/Cardboard(trondheimparkering-4.9.13)/1.3.28';
+                // create a new cURL resource
+                $ch = curl_init();
 
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'x-gltlocale: en_US_trondheimparkering',
-                'x-partnerid: trondheimparkering',
-                'accept-encoding: gzip',
-                'user-agent: Android/Cardboard(trondheimparkering-4.9.13)/1.3.28',
-                'content-type: application/json;charset=UTF-8',
-                'host: parko.giantleap.no'
-            ));
+                // set URL and other appropriate options
+                curl_setopt($ch, CURLOPT_URL, "https://parko.giantleap.no/client/suc-verify");
+                curl_setopt($ch, CURLOPT_HEADER, 0);
 
-            curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
 
-            $data = array(
-                "phoneNumber" => "+4795293136",
-                "code" => $code
-            );
+                /*
+                    Config
+                */
+                $config['useragent'] = 'Android/Cardboard(trondheimparkering-4.9.13)/1.3.28';
 
-            $data_string = json_encode($data);     
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'x-gltlocale: en_US_trondheimparkering',
+                    'x-partnerid: trondheimparkering',
+                    'accept-encoding: gzip',
+                    'user-agent: Android/Cardboard(trondheimparkering-4.9.13)/1.3.28',
+                    'content-type: application/json;charset=UTF-8',
+                    'host: parko.giantleap.no'
+                ));
+                
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
 
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                $data = array(
+                    "phoneNumber" => $phone,
+                    "code" => $code
+                );
 
-            $result = curl_exec($ch);
+                $data_string = json_encode($data);     
 
-            // {"resultCode":"SUCCESS","errorCode":null,"errorMessage":null,"switchToDemo":false}
-            curl_close($ch);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                $res = json_decode(curl_exec($ch), true);
 
-            if ($result['resultCode'] == "SUCCESS") {
-                echo "<p><strong>Token</strong> ".$result["token"]."<br /><strong>Refresh Token:</strong> ".$result['refresh_token']."<br /><strong>userId</strong>".$result['userId']."</p>";
+                //$obj = json_decode($res, true);
 
-                // write to database.
-                $database = new SQLite3('db/db.sqlite');
-                //$processUser = posix_getpwuid(posix_geteuid());
-                //echo $processUser['name'];
-            
-                $query = "CREATE TABLE IF NOT EXISTS parkdata (
-                    userId TEXT PRIMARY KEY,
-                    phone TEXT,
-                    token TEXT,
-                    refresh_token TEXT,
-                    agreementid TEXT
-                );";
-                $database->exec($query);
+                // {"resultCode":"SUCCESS","errorCode":null,"errorMessage":null,"switchToDemo":false}
 
-                $query = "INSERT OR REPLACE INTO parkdata('userId', 'phone', 'token', 'refresh_token') VALUES (".$result['userId'].", +4700000000, ".$result["token"].", ".$result['refresh_token'].");";
-                $database->exec($query);
 
+                if ($res['resultCode'] == 'SUCCESS') {
+                    echo "<p><strong>Token</strong> ".$res["token"]."<br /><strong>Refresh Token:</strong> ".$res['refreshToken']."<br /><strong>userId</strong>".$res['userId']."</p>";
+
+                    // write to database.
+                    $database = new SQLite3('db/db.sqlite');
+                    //$processUser = posix_getpwuid(posix_geteuid());
+                    //echo $processUser['name'];
+                
+                    $query = "CREATE TABLE IF NOT EXISTS parkdata (
+                        userId TEXT PRIMARY KEY,
+                        phone TEXT,
+                        token TEXT,
+                        refresh_token TEXT,
+                        agreementid TEXT
+                    );";
+                    $database->exec($query);
+
+                    $query = "INSERT OR REPLACE INTO parkdata('userId', 'phone', 'token', 'refresh_token') VALUES ('".$res['userId']."', '+4700000000', '".$res["token"]."', '".$res['refreshToken']."');";
+                    //echo "$query";
+                    $database->exec($query);
+
+                    echo "<button id='btnGetProducts' type='button' onclick='getProducts()'>Get Parking Agreements</button>";
+
+
+                } else {
+                    echo "<p>Not successful.</p>";
+                    print_r($res);
+                }
+                curl_close($ch);
 
             } else {
-                echo "<p>Not successful.";
-                print_r($result);
+                echo "<p>Invalid Code Format. Should be ####</p>";
             }
-
-
-        } else {
-            echo "<p>Invalid Code Format. Should be ####</p>";
-        }
+    } else {
+        echo "Invalid phone number '$phone'";
+    }
 ?>
