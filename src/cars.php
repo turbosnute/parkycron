@@ -14,7 +14,6 @@
     );";
     $database->exec($query);
 
-
     $query = "SELECT COUNT(*) as count FROM cardata;";
 
     $stm = $database->prepare($query);
@@ -63,7 +62,7 @@
 ?>
         <section>
             <div id="carsform">
-                <form>
+                <form action="addCar.php" method="GET">
                     <header>
                         <h2>Add Car</h2>
                     </header>

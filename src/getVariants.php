@@ -46,7 +46,7 @@
     $res = json_decode(curl_exec($ch), true);
 
     $elements = $res['sections'][0]['elements'];
-    echo "<h2>Choose Variant";
+    echo "<h2>Choose Variant</h2>";
     ?>
     <table>
     <?php
@@ -89,7 +89,7 @@
         $stm = $database->prepare($query);
         $res = $stm->execute();
         $i = 0;
-        echo "<h2>Choose Car";
+        echo "<h2>Choose Car</h2>";
         echo "<table>";
         while ($row = $res->fetchArray(SQLITE3_NUM)) {
             echo "<tr>";
@@ -102,14 +102,10 @@
 
     } else {
         // if not add input to add car
-        ?>
+        echo "<p>You have no cars added.</p><br /><a href='cars.php'>Add Car</a>";
 
-        <label for="inputPlate">License Plate:</label>
-        <input type="text" id="inputPlate" name="inputPlate" size="14" placeholder="HB 12345">
-        
-        <?php
     }
-    echo "<button id='btnRegisterCar' type='button'>Start Parking</button>";
+    echo "<p><button id='btnSaveConfig' type='button' onclick='Save Config()'>Save Config</button></p>";
 
     curl_close($ch);
 

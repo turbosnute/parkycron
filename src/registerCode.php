@@ -69,15 +69,33 @@
                         phone TEXT,
                         token TEXT,
                         refresh_token TEXT,
-                        agreementid TEXT
+                        agreementid TEXT,
+                        plate TEXT
                     );";
                     $database->exec($query);
 
-                    $query = "INSERT OR REPLACE INTO parkdata('userId', 'phone', 'token', 'refresh_token') VALUES ('".$res['userId']."', '+4700000000', '".$res["token"]."', '".$res['refreshToken']."');";
+                    $query = "INSERT OR REPLACE INTO parkdata('userId', 'phone', 'token', 'refresh_token') VALUES ('".$res['userId']."', '$phone', '".$res["token"]."', '".$res['refreshToken']."');";
                     //echo "$query";
                     $database->exec($query);
 
-                    echo "<button id='btnGetProducts' type='button' onclick='getProducts()'>Get Parking Agreements</button>";
+                    // check if cars exists or something.
+                    $query = "SELECT COUNT(*) as count FROM cardata;";
+
+                    $stm = $database->prepare($query);
+                    $res = $stm->execute();
+                    
+                    $row = $res->fetchArray(SQLITE3_NUM);
+                    $numRows = $row[0];
+                
+                    if ($numRows > 0) {
+                        echo "<button id='btnGetProducts' type='button' onclick='getProducts()'>Get Parking Agreements</button>";
+                    } else {
+                        echo "<p>You have no cars added.</p><br /><a href='cars.php'>Add Car</a>";
+                    }
+
+                    $database->close();
+    
+
 
 
                 } else {

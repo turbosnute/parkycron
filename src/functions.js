@@ -95,3 +95,28 @@ function selectVariant() {
     xmlhttp.send()
 
 }
+
+function startParking() {
+    // Get variant
+    var variants = document.getElementsByName('variant');
+    var variants_value;
+
+    for(var i = 0; i < variants.length; i++){
+        if(variants[i].checked){
+            variants_value = variants[i].value;
+        }
+    }
+
+    // Get Car
+    var cars = document.getElementsByName('car');
+    var cars_value;
+
+    for(var i = 0; i < cars.length; i++){
+        if(cars[i].checked){
+            cars_value = cars[i].value;
+        }
+    }
+
+
+    alert("variant: " + variants_value + " car: " + cars_value);
+}

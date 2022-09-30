@@ -1,20 +1,26 @@
 <?php
+    $database = new SQLite3('db/db.sqlite');
+    $query = "SELECT * FROM parkdata";
+    $stm = $database->prepare($query);
+    $res = $stm->execute();
 
-$plate = $_GET['inputPlate'];
-$uri = $_GET['uri'];
-$plate = str_replace(" ", "", $plate);
-$plate = trim($plate);
+    $row = $res->fetchArray((SQLITE3_NUM));
+    echo "{$row[0]} {$row[1]} {$row[2]} {$row[3]}";
+    $userId = $row[0];
+    $phone = $row[1];
+    $token  = $row[2];
+    $refresh_token = $row[3];
 
-$pattern = '/^[a-z]{2}[0-9]{5}$/'; // plat
-
-if (preg_match($pattern, $plate)) {
+    
     $ch = curl_init();
 
     // set URL and other appropriate options
-    curl_setopt($ch, CURLOPT_URL, "https://parko.giantleap.no$uri");
+    curl_setopt($ch, CURLOPT_URL, "https://parko.giantleap.no/client/reauth");
     curl_setopt($ch, CURLOPT_HEADER, 0);
 
-   /*
+    // Load token
+
+    /*
         Config
     */
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -30,34 +36,22 @@ if (preg_match($pattern, $plate)) {
         "x-token: $token"
     ));
 
-    //curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
 
+    $data = array(
+        "clientIdentifier " => 'SNWKJJSP7NZ4J1DY',
+        "refreshToken" => $refresh_token
+    );
 
-    $today = date("Y-m-d");
-
-    $data_string = "
-    {
-        \"formData\": [
-            {
-                \"name\": \"note\"
-            },
-            {
-                \"name\": \"plate_number_1\",
-                \"value\": \"$today\"
-            }
-        ],
-        \"productVariantId\": \"$productVariantId\"
-    }
-    ";
+    $data_string = json_encode($data);     
 
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+
     $res = json_decode(curl_exec($ch), true);
 
+    print_r($res);
 
-} else {
-    die("Invalid license plate");
-}
-
+    curl_close($ch);
 
 ?>
