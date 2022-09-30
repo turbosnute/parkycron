@@ -96,7 +96,7 @@ function selectVariant() {
 
 }
 
-function startParking() {
+function saveConfig() {
     // Get variant
     var variants = document.getElementsByName('variant');
     var variants_value;
@@ -119,4 +119,15 @@ function startParking() {
 
 
     alert("variant: " + variants_value + " car: " + cars_value);
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("authform").innerHTML = this.responseText;
+        }
+    }
+    var str = document.getElementById("products").value;
+
+    xmlhttp.open("GET", "saveConfig.php?plate=" +  encodeURIComponent(cars_value) + "&uri=" + encodeURIComponent(variants_value), true);
+    xmlhttp.send()
 }

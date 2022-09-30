@@ -20,6 +20,7 @@
             <ul>
                 <li><?php if($site == 'home') { echo 'Home'; } else { echo "<a href='index.php'>Home</a>"; } ?></li>
                 <li><?php if($site == 'cars') { echo 'Cars'; } else { echo "<a href='cars.php'>Cars</a>"; } ?></li>
+                <li><?php if($site == 'config') { echo 'Config'; } else { echo "<a href='config.php'>Config</a>"; } ?></li>
             </ul>
         </nav>
     </header>
