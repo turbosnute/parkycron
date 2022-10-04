@@ -1,5 +1,5 @@
 <?php
-      $database = new SQLite3('db/db.sqlite');
+      $database = new SQLite3('/data/db.sqlite');
       $query = "DELETE FROM parkdata";
       $stm = $database->prepare($query);
       $res = $stm->execute();

@@ -1,7 +1,7 @@
 <?php
     $site = 'config';
     include("top.php");
-    $database = new SQLite3('db/db.sqlite');
+    $database = new SQLite3('/data/db.sqlite');
     //$processUser = posix_getpwuid(posix_geteuid());
     //echo $processUser['name'];
 
@@ -34,7 +34,7 @@
     echo "<tr><th>plate</th><td>{$row[5]}</td></tr>";
     echo "</table>";
     echo "</section>";
-    
+
     $database->close();
 
     include("bottom.php");

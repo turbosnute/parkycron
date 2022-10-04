@@ -60,7 +60,7 @@
                     echo "<p><strong>Token</strong> ".$res["token"]."<br /><strong>Refresh Token:</strong> ".$res['refreshToken']."<br /><strong>userId</strong>".$res['userId']."</p>";
 
                     // write to database.
-                    $database = new SQLite3('db/db.sqlite');
+                    $database = new SQLite3('/data/db.sqlite');
                     //$processUser = posix_getpwuid(posix_geteuid());
                     //echo $processUser['name'];
                 

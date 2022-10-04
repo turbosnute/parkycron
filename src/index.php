@@ -3,7 +3,7 @@
     include("top.php");
 
 
-    $database = new SQLite3('db/db.sqlite');
+    $database = new SQLite3('/data/db.sqlite');
     $query = "SELECT * FROM parkdata";
     $stm = $database->prepare($query);
     $res = $stm->execute();

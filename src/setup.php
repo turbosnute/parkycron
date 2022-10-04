@@ -1,6 +1,6 @@
 <?php
     //create or open (if exists) the database
-    $database = new SQLite3('db/db.sqlite');
+    $database = new SQLite3('/data/db.sqlite');
     //$processUser = posix_getpwuid(posix_geteuid());
     //echo $processUser['name'];
 

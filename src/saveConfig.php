@@ -13,8 +13,7 @@ if (preg_match($pattern, $plate)) {
         $variantId = $matches[1];
         // write to database.
 
-        $database = new SQLite3('db/db.sqlite');
-
+        $database = new SQLite3('/data/db.sqlite');
 
         $query = "SELECT * FROM parkdata";
         $stm = $database->prepare($query);
