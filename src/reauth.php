@@ -1,5 +1,5 @@
 <?php
-    $database = new SQLite3('/data/db.sqlite');
+    include("initdb.php");
     $query = "SELECT * FROM parkdata";
     $stm = $database->prepare($query);
     $res = $stm->execute();
@@ -36,31 +36,23 @@
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
 
-    $data = array(
-        "clientIdentifier " => '',
-        "refreshToken" => $refresh_token
-    );
-
-    echo "<hr>";
-    
-    print_r($data);
-
-    echo "<hr>";
-    //$data_string = json_encode($data);    
-
     $data_string = "{
         \"refreshToken\": \"$refresh_token\",
         \"clientIdentifier\": \"SNWKJJSP7NZ4J1DY\"
       }";
-
-    echo "<hr>";
-    echo "$data_string<hr>";
 
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
     $res = json_decode(curl_exec($ch), true);
 
     print_r($res);
 
+    $query = "UPDATE parkdata SET token = '".$res['token']."', refresh_token = '$refresh_token', 'lastReauthResult' = '".$res['resultCode']."', 'lastReauthAttempt' = '".date('Y-m-d H:i:s')."' WHERE userId = '$userId'";
+;
+    $database->exec($query);
     curl_close($ch);
 
+    $query = "INSERT INTO log(operation, log_time, msg) VALUES('reauth', '".date('Y-m-d H:i:s')."', 'Status ".$res['resultCode']."')";
+    $database->exec($query);
+
+    $database->close();
 ?>

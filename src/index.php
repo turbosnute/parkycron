@@ -2,8 +2,8 @@
     $site = 'home';
     include("top.php");
 
+    include("initdb.php");
 
-    $database = new SQLite3('/data/db.sqlite');
     $query = "SELECT * FROM parkdata";
     $stm = $database->prepare($query);
     $res = $stm->execute();

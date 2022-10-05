@@ -49,20 +49,5 @@
     
     $database->close();
     
-?>
-        <section>
-            <div id="carsform">
-                <form action="addCar.php" method="GET">
-                    <header>
-                        <h2>Add Car</h2>
-                    </header>
-                        <label for="inputPlate">License Plate:</label>
-                        <input type="text" id="inputPlate" name="inputPlate" size="14" placeholder="HB 12345">
-                        <button id="btnRegisterCar" type="submit">Add Car</button>
-                </form>
-            </div>
-        </section>
-
-<?php
     include("bottom.php");
 ?>

@@ -23,7 +23,6 @@
                 curl_setopt($ch, CURLOPT_URL, "https://parko.giantleap.no/client/suc-verify");
                 curl_setopt($ch, CURLOPT_HEADER, 0);
 
-
                 /*
                     Config
                 */
@@ -60,21 +59,11 @@
                     echo "<p><strong>Token</strong> ".$res["token"]."<br /><strong>Refresh Token:</strong> ".$res['refreshToken']."<br /><strong>userId</strong>".$res['userId']."</p>";
 
                     // write to database.
-                    $database = new SQLite3('/data/db.sqlite');
-                    //$processUser = posix_getpwuid(posix_geteuid());
-                    //echo $processUser['name'];
-                
-                    $query = "CREATE TABLE IF NOT EXISTS parkdata (
-                        userId TEXT PRIMARY KEY,
-                        phone TEXT,
-                        token TEXT,
-                        refresh_token TEXT,
-                        agreementid TEXT,
-                        plate TEXT
-                    );";
+                    include("initdb.php");
+
                     $database->exec($query);
 
-                    $query = "INSERT OR REPLACE INTO parkdata('userId', 'phone', 'token', 'refresh_token') VALUES ('".$res['userId']."', '$phone', '".$res["token"]."', '".$res['refreshToken']."');";
+                    $query = "INSERT OR REPLACE INTO parkdata('userId', 'phone', 'token', 'refresh_token', 'lastReauthResult', 'lastReauthAttempt') VALUES ('".$res['userId']."', '$phone', '".$res["token"]."', '".$res['refreshToken']."', 'SUCCESS', '".date('Y-m-d H:i:s')."');";
                     //echo "$query";
                     $database->exec($query);
 
