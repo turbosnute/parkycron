@@ -15,7 +15,7 @@ if (preg_match($pattern, $plate)) {
         $variantId = $matches[1];
         // write to database.
 
-        $database = new SQLite3('/data/db.sqlite');
+        include("initdb.php");
 
         $query = "SELECT * FROM parkdata";
         $stm = $database->prepare($query);

@@ -7,7 +7,7 @@
 
     if (preg_match($pattern, $plate)) {
 
-        $database = new SQLite3('/data/db.sqlite');
+        include("initdb.php");
 
         $display = str_replace(" (deaktivert)","",$res['vehicleInfo']['infoString']);
         $color = $res['vehicleInfo']['color'];

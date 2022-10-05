@@ -1,25 +1,10 @@
 <?php
     $site = 'config';
     include("top.php");
-    $database = new SQLite3('/data/db.sqlite');
-    //$processUser = posix_getpwuid(posix_geteuid());
-    //echo $processUser['name'];
 
-    $query = "CREATE TABLE IF NOT EXISTS parkdata (
-        userId TEXT PRIMARY KEY,
-        phone TEXT,
-        token TEXT,
-        refresh_token TEXT,
-        agreementid TEXT,
-        plate TEXT,
-        lastReauthResult TEXT,
-        lastReauthAttempt TEXT
-    );";
-    
-    $database->exec($query);
+    include("initdb.php");
 
     $query = "SELECT * FROM parkdata";
-
 
     $stm = $database->prepare($query);
     $res = $stm->execute();
@@ -35,6 +20,8 @@
     echo "<tr><th>refresh_token</th><td>{$row[3]}</td></tr>";
     echo "<tr><th>agreementid</th><td>{$row[4]}</td></tr>";
     echo "<tr><th>plate</th><td>{$row[5]}</td></tr>";
+    echo "<tr><th>lastReauthResult</td><td>{$row[6]}</td></tr>";
+    echo "<tr><th>lastReauthAttempt</td><td>{$row[7]}</td></tr>";
     echo "</table>";
     echo "</section>";
 

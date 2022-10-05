@@ -2,7 +2,7 @@
 <footer>
     <hr>
     <p>
-        <small>Contact info</small>
+        <small></small>
     </p>
 </footer>
 </body>
