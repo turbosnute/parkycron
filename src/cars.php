@@ -13,7 +13,7 @@
     $numRows = $row[0];
 
     if ($numRows > 0) {
-        $query = "SELECT * FROM cardata";
+        $query = "SELECT * FROM log";
         $stm = $database->prepare($query);
 
 
@@ -36,7 +36,7 @@
         $res = $stm->execute();
 
         while ($row = $res->fetchArray(SQLITE3_NUM)) {
-            echo "<tr><td>{$row[0]}</td><td>{$row[1]}</td><td>{$row[2]}</td><td><a href='deleteCar.php?plate=".$row[0]."'>delete</a></tr>";
+            echo "<tr><td>{$row[0]}</td><td>{$row[1]}</td><td>{$row[2]}</td><td><a href='deleteCar.php?plate=".$row[0]."'>delete</a></td></tr>";
         }
 
         ?>
