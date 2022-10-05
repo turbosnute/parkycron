@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -qq \
     vim
 COPY src/ /var/www/html
 # Cron lines
-RUN echo "* * * * * www-data echo 'Hello Word' > /var/www/html/test.txt" >> /etc/crontab
+RUN echo "0 * * * * www-data php /var/www/html/reauth.php" >> /etc/crontab
 # Change CMD to have cron running
 RUN echo "#!/bin/sh\ncron\n/usr/local/bin/apache2-foreground" > /usr/bin/run
 RUN chmod u+x /usr/bin/run
