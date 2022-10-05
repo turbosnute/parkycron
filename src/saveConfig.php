@@ -1,6 +1,8 @@
 <?php
 
-$plate = $_GET['inputPlate'];
+echo "test";
+
+$plate = $_GET['plate'];
 $uri = $_GET['uri'];
 $plate = str_replace(" ", "", $plate);
 $plate = trim($plate);

@@ -14,7 +14,7 @@
     $pattern = '/^\+[0-9]{10}$/';
 
     if (preg_match($pattern, $phone)) {
-        echo "Valid phone number ($phone)";
+        //echo "Valid phone number ($phone)";
 
         // create a new cURL resource
         $ch = curl_init();
@@ -55,7 +55,7 @@
         }
 
         if ($result['resultCode'] == 'SUCCESS') {
-            echo "<p>Successfully ordered SMS Code.</p>";
+            echo "<aside>Successfully ordered SMS Code.</aside>";
 
             /*
                 Enter Code Form Here?

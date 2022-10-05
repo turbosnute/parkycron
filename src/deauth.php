@@ -4,5 +4,5 @@
       $stm = $database->prepare($query);
       $res = $stm->execute();
       $database->close();
-      header('Location: cars.php');
+      header('Location: index.php');
 ?>

@@ -5,7 +5,7 @@
     $res = $stm->execute();
 
     $row = $res->fetchArray((SQLITE3_NUM));
-    echo "{$row[0]} {$row[1]} {$row[2]} {$row[3]}";
+    //echo "{$row[0]} {$row[1]} {$row[2]} {$row[3]}";
     $userId = $row[0];
     $phone = $row[1];
     $token  = $row[2];
@@ -18,12 +18,9 @@
     curl_setopt($ch, CURLOPT_URL, "https://parko.giantleap.no/client/reauth");
     curl_setopt($ch, CURLOPT_HEADER, 0);
 
-    // Load token
-
     /*
         Config
     */
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $config['useragent'] = 'Android/Cardboard(trondheimparkering-4.9.13)/1.3.28';
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -40,14 +37,26 @@
     curl_setopt($ch, CURLOPT_USERAGENT, $config['useragent']);
 
     $data = array(
-        "clientIdentifier " => 'SNWKJJSP7NZ4J1DY',
+        "clientIdentifier " => '',
         "refreshToken" => $refresh_token
     );
 
-    $data_string = json_encode($data);     
+    echo "<hr>";
+    
+    print_r($data);
+
+    echo "<hr>";
+    //$data_string = json_encode($data);    
+
+    $data_string = "{
+        \"refreshToken\": \"$refresh_token\",
+        \"clientIdentifier\": \"SNWKJJSP7NZ4J1DY\"
+      }";
+
+    echo "<hr>";
+    echo "$data_string<hr>";
 
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-
     $res = json_decode(curl_exec($ch), true);
 
     print_r($res);

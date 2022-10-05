@@ -73,6 +73,7 @@ function getVariants() {
 }
 
 function selectVariant() {
+    document.getElementById("btnGetVariants").disabled = true;
 
     var variants = document.getElementsByName('variant');
     var variants_value;
@@ -97,6 +98,8 @@ function selectVariant() {
 }
 
 function saveConfig() {
+    document.getElementById("btnSaveConfig").disabled = true;
+
     // Get variant
     var variants = document.getElementsByName('variant');
     var variants_value;
@@ -118,7 +121,7 @@ function saveConfig() {
     }
 
 
-    alert("variant: " + variants_value + " car: " + cars_value);
+    //alert("variant: " + variants_value + " car: " + cars_value);
 
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
@@ -126,7 +129,7 @@ function saveConfig() {
             document.getElementById("authform").innerHTML = this.responseText;
         }
     }
-    var str = document.getElementById("products").value;
+    //var str = document.getElementById("products").value;
 
     xmlhttp.open("GET", "saveConfig.php?plate=" +  encodeURIComponent(cars_value) + "&uri=" + encodeURIComponent(variants_value), true);
     xmlhttp.send()

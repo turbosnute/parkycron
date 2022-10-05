@@ -105,7 +105,7 @@
         echo "<p>You have no cars added.</p><br /><a href='cars.php'>Add Car</a>";
 
     }
-    echo "<p><button id='btnSaveConfig' type='button' onclick='Save Config()'>Save Config</button></p>";
+    echo "<p><button id='btnSaveConfig' type='button' onclick='saveConfig()'>Save Config</button></p>";
 
     curl_close($ch);
 
