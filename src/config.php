@@ -11,8 +11,11 @@
         token TEXT,
         refresh_token TEXT,
         agreementid TEXT,
-        plate TEXT
+        plate TEXT,
+        lastReauthResult TEXT,
+        lastReauthAttempt TEXT
     );";
+    
     $database->exec($query);
 
     $query = "SELECT * FROM parkdata";
